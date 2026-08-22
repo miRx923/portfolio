@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master's Thesis Case Study | miRx923</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Local, page-scoped styles for the thesis case study.
+           These extend style.css without modifying the shared stylesheet. */
+        .thesis-hero {
+            padding: 6rem 1.5rem 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .thesis-breadcrumb {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 1rem;
+        }
+        .thesis-breadcrumb a { color: inherit; text-decoration: none; }
+        .thesis-breadcrumb a:hover { text-decoration: underline; }
+        .thesis-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        .thesis-meta-item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            padding: 0.4rem 0.9rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 999px;
+            opacity: 0.85;
+        }
+        .thesis-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+        .thesis-section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+        }
+        .thesis-section p {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+        .contribution-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            gap: 0.75rem;
+        }
+        .contribution-list li {
+            padding-left: 1.6rem;
+            position: relative;
+            line-height: 1.6;
+        }
+        .contribution-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            opacity: 0.6;
+        }
+        .dataset-table, .example-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.92rem;
+        }
+        .dataset-table th, .dataset-table td,
+        .example-table th, .example-table td {
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 0.7rem 0.9rem;
+            text-align: left;
+            vertical-align: top;
+        }
+        .dataset-table th, .example-table th {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            opacity: 0.75;
+        }
+        .interface-preview {
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            background: rgba(255,255,255,0.03);
+        }
+        .interface-preview .placeholder-frame {
+            border: 1px dashed rgba(255,255,255,0.25);
+            border-radius: 8px;
+            padding: 3rem 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            opacity: 0.6;
+            margin-bottom: 1rem;
+        }
+        .interface-caption {
+            font-size: 0.9rem;
+            opacity: 0.75;
+            margin-top: 0.5rem;
+        }
+        .research-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .research-stat {
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .research-stat .stat-value {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        .research-stat .stat-label {
+            display: block;
+            font-size: 0.78rem;
+            opacity: 0.7;
+            margin-top: 0.3rem;
+        }
+        .plot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .plot-card {
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 1.2rem;
+        }
+        .plot-card .plot-placeholder {
+            border: 1px dashed rgba(255,255,255,0.2);
+            border-radius: 6px;
+            padding: 3rem 1rem;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            opacity: 0.55;
+            margin-bottom: 0.8rem;
+        }
+        .plot-card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+        }
+        .plot-card p {
+            font-size: 0.88rem;
+            opacity: 0.8;
+            margin: 0;
+        }
+        .findings-list, .limitations-list {
+            padding-left: 1.2rem;
+            line-height: 1.7;
+        }
+        .findings-list li, .limitations-list li {
+            margin-bottom: 0.6rem;
+        }
+        .thesis-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+        .thesis-divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin: 0 auto;
+            max-width: 900px;
+        }
+    </style>
+</head>
+
+<body id="top">
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-bracket">&lt;</span>miRx923<span class="logo-bracket">/&gt;</span>
+            </a>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">About Me</a></li>
+                <li><a href="projects.html" class="nav-link active">Projects</a></li>
+                <li>
+                    <a href="https://github.com/tvojemeno" target="_blank" rel="noopener noreferrer" class="nav-link nav-github">
+                        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="ascii-hero-background" aria-hidden="true">
+            <canvas id="asciiCanvas"></canvas>
+        </div>
+
+        <section class="thesis-hero reveal">
+            <div class="thesis-breadcrumb">
+                <a href="index.html">About Me</a> / <a href="projects.html">Projects</a> / Master's Thesis Case Study
+            </div>
+
+            <h1 class="page-title">Measuring Prompt Robustness in Slovak Large Language Models</h1>
+            <p class="page-subtitle">
+                A benchmark and Streamlit application for evaluating how language models respond to
+                semantically equivalent variations of Slovak instructions.
+            </p>
+
+            <div class="thesis-meta-row">
+                <span class="thesis-meta-item">Year: 2026</span>
+                <span class="thesis-meta-item">Focus: Slovak prompt sensitivity</span>
+                <span class="thesis-meta-item">Metric: POSIX Prompt Sensitivity Index</span>
+                <span class="thesis-meta-item">Output: Benchmark, datasets, experiments, web interface</span>
+            </div>
+
+            <div class="thesis-links">
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Thesis PDF</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Source Code</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Live Demo</a>
+            </div>
+        </section>
+
+        <hr class="thesis-divider">
+
+        <section class="thesis-section reveal">
+            <h2 class="section-title">Problem &amp; Motivation</h2>
+            <p>
+                Large language models can produce different answers when a prompt is paraphrased, contains a
+                spelling mistake, omits diacritics, or uses a different tone — even when the intended meaning
+                remains unchanged. For a relatively low-resource language such as Slovak, this instability is
+                poorly understood, since most existing robustness benchmarks focus on English or other
+                high-resource languages.
+            </p>
+            <p>
+                This project investigates how robust current language models are to such linguistic variations
+                in Slovak, and whether Slovak-focused models behave more reliably than multilingual or
+                European-focused alternatives when faced with realistic, everyday prompt variation.
+            </p>
+        </section>
+
+        <section class="thesis-section reveal">
+            <h2 class="section-title">My Contribution</h2>
+            <ul class="contribution-list">
+                <li>Designed the Slovak prompt-sensitivity benchmark from the ground up.</li>
+                <li>Created four datasets covering different linguistic perturbations.</li>
+                <li>Selected and implemented the POSIX-based evaluation process for quantifying sensitivity.</li>
+                <li>Evaluated Slovak, European-focused, and multilingual language models under a shared protocol.</li>
+                <li>Built a Streamlit interface for running experiments and inspecting results interactively.</li>
+                <li>Analyzed the experimental results and proposed strategies for improving robustness.</li>
+            </ul>
+        </section>
+
+        <section class="thesis-section reveal">
+            <h2 class="section-title">Dataset Overview</h2>
+            <p>
+                The benchmark is built on four datasets, each isolating a different type of prompt variation
+                while preserving the original intent of the instruction.
+            </p>
+
+            <table class="dataset-table">
+                <thead>
+                    <tr>
+                        <th>Dataset category</th>
+                        <th>What it tests</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Paraphrases</td>
+                        <td>Whether meaning-preserving reformulations change the model's output</td>
+                    </tr>
+                    <tr>
+                        <td>Spelling &amp; grammatical errors</td>
+                        <td>Robustness to typos and grammatical mistakes</td>
+                    </tr>
+                    <tr>
+                        <td>Mixture</td>
+                        <td>Combined linguistic perturbations occurring together</td>
+                    </tr>
+                    <tr>
+                        <td>Tonality</td>
+                        <td>The effect of politeness level and instruction style</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>Representative (simplified) examples used for illustration:</p>
+
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Variant</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Original</td>
+                        <td>Vysvetli princíp strojového učenia.</td>
+                    </tr>
+                    <tr>
+                        <td>Paraphrase</td>
+                        <td>Objasni, ako funguje strojové učenie.</td>
+                    </tr>
+                    <tr>
+                        <td>Typographical variation</td>
+                        <td>Vysvetli princip strojoveho ucenia.</td>
+                    </tr>
+                    <tr>
+                        <td>Politeness variation</td>
+                        <td>Mohli by ste, prosím, vysvetliť princíp strojového učenia?</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                The full dataset, generation scripts, and validation process are documented in the source
+                repository rather than embedded on this page.
+            </p>
+        </section>
+
+        <section class="thesis-section reveal">
+            <h2 class="section-title">Methodology</h2>
+            <p>
+                Each model was evaluated across all four datasets using an identical prompting protocol. For
+                every original instruction, the model's response was compared against its response to each
+                perturbed variant. Sensitivity was then quantified using the <strong>POSIX (Prompt Sensitivity
+                Index)</strong> metric, which measures how much a model's output changes under semantically
+                equivalent prompt variations — lower POSIX values indicate greater robustness.
+            </p>
+            <p>
+                Models evaluated included Slovak-focused models, European-focused multilingual models, and
+                broader multilingual models, allowing a direct comparison of how language specialization
+                relates to robustness. Due to hardware constraints, the evaluation focused on smaller models
+                (under roughly 7B parameters).
+            </p>
+
+            <div class="research-stats">
+                <div class="research-stat">
+                    <span class="stat-value">4</span>
+                    <span class="stat-label">Benchmark datasets</span>
+                </div>
+                <div class="research-stat">
+                    <span class="stat-value">POSIX</span>
+                    <span class="stat-label">Sensitivity metric</span>
+                </div>
+                <div class="research-stat">
+                    <span class="stat-value">&lt; 7B</span>
+                    <span class="stat-label">Parameters evaluated</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="thesis-section reveal">
+            <h2 class="section-title">Streamlit Interface</h2>
+            <p>
+                To make the benchmark usable beyond a one-off experiment, the project includes a Streamlit
+                application that lets a user select a model and dataset, run the benchmark, and inspect POSIX
+                sensitivity scores and robustness profiles directly in the browser.
+            </p>
+
+            <div class="interface-preview">
+                <div class="placeholder-frame">
+                    Screenshot placeholder — Streamlit benchmark interface<br>
+                    (model selection · dataset selection · experiment execution · POSIX results · robustness profiles)
+                </div>
+                <p class="interface-caption">
+                    The Streamlit interface allows users to select a model and dataset, run the benchmark, and
+                    inspect POSIX sensitivity scores and robustness profiles.
+                </p>
+            </div>
+        </section>
+
+        <section class="thesis-section reveal">
+            <h2 class="section-title">Results &amp; Plots</h2>
+            <p>
+                Three comparisons were central to the analysis: overall robustness per model, sensitivity broken
+                down by perturbation type, and a grouped comparison across Slovak, European-focused, and
+                multilingual models.
+            </p>
+
+            <div class="plot-grid">
+                <div class="plot-card">
+                    <div class="plot-placeholder">Chart placeholder<br>POSIX score by model</div>
+                    <h3>Model robustness comparison</h3>
+                    <p>POSIX scores for all evaluated models — lower values indicate stronger robustness.</p>
+                </div>
+                <div class="plot-card">
+                    <div class="plot-placeholder">Chart placeholder<br>Sensitivity by perturbation type</div>
+                    <h3>Sensitivity by perturbation type</h3>
+                    <p>Comparison across paraphrases, spelling/grammatical errors, mixed variations, and tone changes.</p>
+                </div>
+                <div class="plot-card">
+                    <div class="plot-placeholder">Chart placeholder<br>Robustness profiles</div>
+                    <h3>Overall robustness profiles</h3>
+                    <p>Grouped comparison of Slovak, European-focused, and multilingual models across all datasets.</p>
+                </div>
+            </div>
+
+            <p>
+                Spelling and grammatical errors produced the largest changes in model behavior, while
+                syntactic and pragmatic-stylistic changes (such as politeness) generally produced smaller
+                effects. Slovak-focused models generally showed lower sensitivity to prompt variations than
+                multilingual models, which were more affected by linguistic perturbations.
+            </p>
+        </section>
+
+        <section class="thesis-section reveal">
+            <h2 class="section-title">Key Findings</h2>
+            <ul class="findings-list">
+                <li>Developed a dedicated benchmark for Slovak prompt sensitivity, covering four distinct types of linguistic perturbation.</li>
+                <li>Compared Slovak, European-focused, and multilingual language models under an identical evaluation protocol.</li>
+                <li>Analyzed lexical, syntactic, structural, and pragmatic prompt variations separately.</li>
+                <li>Found the highest sensitivity for grammatical errors and spelling mistakes across nearly all models.</li>
+                <li>Observed greater robustness in Slovak-focused models compared to broader multilingual models.</li>
+                <li>Implemented a graphical interface for running and evaluating experiments interactively.</li>
+            </ul>
+        </section>
+
+        <section class="thesis-section reveal">
+            <h2 class="section-title">Limitations &amp; Lessons Learned</h2>
+            <ul class="limitations-list">
+                <li>Experiments focused on smaller models due to hardware constraints, so findings may not generalize directly to much larger models.</li>
+                <li>Overall lower model quality in Slovak can complicate interpretation of sensitivity scores, since a model may produce a stable but consistently incorrect answer.</li>
+                <li>Further work could examine larger models, quantization effects, language-specific tokenizers, and additional Slovak datasets.</li>
+                <li>Building a usable interface alongside the experiments highlighted the value of tooling, not just raw results, for communicating research outcomes.</li>
+            </ul>
+        </section>
+
+        <section class="thesis-section reveal">
+            <h2 class="section-title">Links &amp; Reproducibility</h2>
+            <p>
+                The complete dataset, evaluation code, and Streamlit application are hosted externally to keep
+                this page focused while allowing full reproducibility of the benchmark.
+            </p>
+            <div class="thesis-links">
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View Benchmark on GitHub</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Download Sample Dataset</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Explore the Streamlit App</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Download Thesis PDF</a>
+            </div>
+        </section>
+
+        <section class="cta-section reveal">
+            <div class="cta-content">
+                <h2>Back to Projects</h2>
+                <p>See the full thesis summary alongside the bachelor's thesis and other data engineering work.</p>
+                <a href="projects.html" class="btn btn-primary">View Projects</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 miRx923's Portfolio. Built with a passion for data.</p>
+            <a href="#top" class="back-to-top">Back to top ↑</a>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
